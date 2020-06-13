@@ -1,0 +1,50 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://Tree.cs" type="Script" id=1]
+[ext_resource path="res://CameraContainer.cs" type="Script" id=2]
+[ext_resource path="res://TreeGenerator.cs" type="Script" id=3]
+
+[sub_resource type="Shader" id=1]
+code = "shader_type spatial;
+
+void fragment()
+{
+	ALBEDO = vec3(0, UV.y, 0);
+}"
+
+[sub_resource type="ShaderMaterial" id=2]
+shader = SubResource( 1 )
+
+[sub_resource type="PlaneMesh" id=3]
+size = Vector2( 100, 100 )
+
+[sub_resource type="SpatialMaterial" id=4]
+albedo_color = Color( 0.207843, 0.596078, 0.101961, 1 )
+
+[node name="Root" type="Spatial"]
+
+[node name="Tree" type="Spatial" parent="."]
+script = ExtResource( 1 )
+material = SubResource( 2 )
+
+[node name="CameraContainer" type="Spatial" parent="."]
+script = ExtResource( 2 )
+
+[node name="Camera" type="Camera" parent="CameraContainer"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 10 )
+
+[node name="DirectionalLight" type="DirectionalLight" parent="."]
+transform = Transform( 1, 0, 0, 0, 0.193789, 0.981043, 0, -0.981043, 0.193789, 0, 7.99237, 0 )
+shadow_enabled = true
+
+[node name="Ground" type="Spatial" parent="."]
+
+[node name="MeshInstance" type="MeshInstance" parent="Ground"]
+mesh = SubResource( 3 )
+material/0 = SubResource( 4 )
+
+[node name="TreeGenerator" type="Spatial" parent="."]
+script = ExtResource( 3 )
+Count = 20
+BoundsX = 20.0
+BoundsZ = 20.0
