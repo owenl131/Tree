@@ -6,4 +6,4 @@ Naive implementation of Procedurally Generated Tree in Godot with swaying motion
 
 And... a screen recording:
 
-![Video](Screenshot/Video.gif)
+![Video](Screenshot/Video_optimized.gif)
