@@ -1,0 +1,14 @@
+[gd_resource type="ShaderMaterial" load_steps=4 format=2]
+
+[ext_resource path="res://Leaf.shader" type="Shader" id=1]
+
+[sub_resource type="OpenSimplexNoise" id=9]
+
+[sub_resource type="NoiseTexture" id=10]
+seamless = true
+noise = SubResource( 9 )
+
+[resource]
+shader = ExtResource( 1 )
+shader_param/pi = 3.14159
+shader_param/noise = SubResource( 10 )

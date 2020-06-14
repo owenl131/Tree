@@ -12,27 +12,27 @@ public class CameraContainer : Spatial
     {
         if (Input.IsActionPressed("ui_page_down"))
         {
-            GetNode<Camera>("Camera").Translate(Vector3.Back * delta);
+            GetNode<Camera>("Camera").Translate(2 * Vector3.Back * delta);
         }
         if (Input.IsActionPressed("ui_page_up"))
         {
-            GetNode<Camera>("Camera").Translate(Vector3.Forward * delta);
+            GetNode<Camera>("Camera").Translate(2 * Vector3.Forward * delta);
         }
         if (Input.IsActionPressed("ui_left"))
         {
-            RotateY(-1f * delta);
+            RotateY(-2f * delta);
         }
         if (Input.IsActionPressed("ui_right"))
         {
-            RotateY(1f * delta);
+            RotateY(2f * delta);
         }
         if (Input.IsActionPressed("ui_up"))
         {
-            Translate(Vector3.Up * delta);
+            Translate(2 * Vector3.Up * delta);
         }
         if (Input.IsActionPressed("ui_down"))
         {
-            Translate(Vector3.Down * delta);
+            Translate(2 * Vector3.Down * delta);
         }
         GetNode<Camera>("Camera").LookAt(Vector3.Up * 1, Vector3.Up);
     }

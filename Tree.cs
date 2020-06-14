@@ -33,12 +33,14 @@ public class Tree : Spatial
         AlbedoColor = new Color(0.2f, 0.6f, 0.04f)
     };
 
+    public static ShaderMaterial LeafMaterial2 = ResourceLoader.Load("Leaf.tres") as ShaderMaterial;
+
     public Tree()
     {
-        CrossSectionalRadius = 0.1f;
-        MinLength = 1.0f;
-        MaxLength = 2.0f;
-        DepthRemaining = 7;
+        CrossSectionalRadius = 0.1f * 3;
+        MinLength = 1.0f * 3;
+        MaxLength = 2.0f * 3;
+        DepthRemaining = 3;
         Children = new List<Tree>();
         SwayPhase = (float) GD.RandRange(-Mathf.Pi, Mathf.Pi);
     }
@@ -93,30 +95,40 @@ public class Tree : Spatial
         // Main Branch
         AddBranch(1, length, 0.9f, 0, Mathf.Deg2Rad(MainMaxOffsetDegrees));
 
-        float subOffsetDegrees = Mathf.Deg2Rad(SubMaxOffsetDegrees);
-        // Sub Branches
-        if (GD.RandRange(0, 1) > 0.5)
+        if (DepthRemaining > 1) 
         {
-            AddBranch(1, length, 0.7f, subOffsetDegrees / 2, subOffsetDegrees);
-        }
-        else 
-        {
-            AddBranch(1, length, 0.7f, subOffsetDegrees / 2, subOffsetDegrees);
-            //AddBranch(2, length, 0.7f, subOffsetDegrees / 2, subOffsetDegrees);
+            float subOffsetDegrees = Mathf.Deg2Rad(SubMaxOffsetDegrees);
+            // Sub Branches
+            if (GD.RandRange(0, 1) > 0.5)
+            {
+                AddBranch(1, length, 0.8f, subOffsetDegrees / 2, subOffsetDegrees);
+                AddBranch(1, length, 0.8f, subOffsetDegrees / 2, subOffsetDegrees);
+            }
+            else 
+            {
+                AddBranch(1, length, 0.8f, subOffsetDegrees / 2, subOffsetDegrees);
+                AddBranch(1, length, 0.8f, subOffsetDegrees / 2, subOffsetDegrees);
+                // AddBranch(1, length, 0.7f, subOffsetDegrees / 2, subOffsetDegrees);
+                //AddBranch(2, length, 0.7f, subOffsetDegrees / 2, subOffsetDegrees);
+            }
         }
     }
 
     public void CreateLeaf()
     {
         SphereMesh mesh = new SphereMesh();
-        mesh.Radius = 0.4f;
+        // mesh.Radius = 0.4f * 5;
+        mesh.Radius = 1;
         mesh.Height = mesh.Radius * 2;
-        mesh.RadialSegments = 8;
-        mesh.Rings = 4;
+        mesh.RadialSegments = 256;
+        mesh.Rings = 128;
         MeshInstance meshInstance = new MeshInstance();
         meshInstance.Mesh = mesh;
-        meshInstance.SetSurfaceMaterial(0, LeafMaterial);
+        meshInstance.SetSurfaceMaterial(0, LeafMaterial2);
         AddChild(meshInstance);
+        meshInstance.RotateX((float) GD.RandRange(-Mathf.Pi, Mathf.Pi));
+        meshInstance.RotateY((float) GD.RandRange(-Mathf.Pi, Mathf.Pi));
+        meshInstance.RotateZ((float) GD.RandRange(-Mathf.Pi, Mathf.Pi));
     }
 
 
