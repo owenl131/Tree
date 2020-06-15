@@ -1,9 +1,10 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://Tree.cs" type="Script" id=1]
 [ext_resource path="res://CameraContainer.cs" type="Script" id=2]
 [ext_resource path="res://TreeGenerator.cs" type="Script" id=3]
 [ext_resource path="res://Leaf.tres" type="Material" id=4]
+[ext_resource path="res://LeafMaterial.cs" type="Script" id=5]
 
 [sub_resource type="Shader" id=1]
 code = "shader_type spatial;
@@ -51,7 +52,7 @@ material/0 = SubResource( 4 )
 
 [node name="TreeGenerator" type="Spatial" parent="."]
 script = ExtResource( 3 )
-Count = 0
+Count = 5
 BoundsX = 20.0
 BoundsZ = 20.0
 
@@ -60,3 +61,4 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4, 0 )
 visible = false
 mesh = SubResource( 5 )
 material/0 = ExtResource( 4 )
+script = ExtResource( 5 )

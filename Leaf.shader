@@ -2,12 +2,27 @@ shader_type spatial;
 // render_mode unshaded;
 
 uniform sampler2D noise;
+uniform sampler2D normals;
 uniform float pi = 3.1415926535;
 
 vec2 calcUV(vec3 pos) {
-	float u = 0.5 + atan(pos.z, pos.x) / (2.0 * pi);
+	float u = 0.5 - atan(pos.z, -pos.x) / (2.0 * pi);
 	float v = 0.5 - asin(pos.y) / pi;
 	return vec2(u, v);
+}
+
+vec3 calcVertex(vec2 uv) {
+	float u = uv.x;
+	float v = uv.y;
+	float y = sin((0.5 - v) * pi);
+	float magOther = sqrt(1.0 - y*y);
+	float z = -magOther * sin(u * 2.0 * pi);
+	float x = -magOther * cos(u * 2.0 * pi);
+	return vec3(x, y, z);
+}
+
+vec3 calcHeight(vec3 pt) {
+	return pt + pt * texture(noise, calcUV(pt)).x;
 }
 
 vec3 calcNormal(vec3 pt, mat3 rot1, mat3 rot2) {
@@ -31,10 +46,17 @@ void vertex() {
 	mat3 rz = mat3(vec3(cos(angle), -sin(angle), 0), vec3(sin(angle), cos(angle), 0), vec3(0, 0, 1));
 	
 	UV = calcUV(VERTEX);
-	NORMAL = calcNormal(VERTEX, rx, rz);
-	VERTEX += VERTEX * texture(noise, calcUV(VERTEX)).x;
+	// NORMAL = calcNormal(VERTEX, rx, rz);
+	// VERTEX = calcHeight(VERTEX);
+	VERTEX = texture(noise, UV).xyz;
+	VERTEX = VERTEX * 6.0 - 3.0;
+	NORMAL = texture(normals, UV).xyz;
+	NORMAL = NORMAL * 2.0 - 1.0;
+	// VERTEX = calcVertex(UV);
 }
 
 void fragment() {
 	ALBEDO = vec3(0.2, 0.6, 0.04);
+	// ALBEDO = vec3(UV.x, UV.x, UV.x);
+	// ALBEDO = vec3(UV.y, UV.y, UV.y);
 }

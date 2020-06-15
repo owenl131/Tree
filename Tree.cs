@@ -16,7 +16,7 @@ public class Tree : Spatial
     public List<Tree> Children;
 
     public float MainMaxOffsetDegrees = 20;
-    public float SubMaxOffsetDegrees = 60;
+    public float SubMaxOffsetDegrees = 40;
 
     public float SwayFrequency = 2.0f;
     public float SwayAmplitude = 0.05f;
@@ -37,10 +37,10 @@ public class Tree : Spatial
 
     public Tree()
     {
-        CrossSectionalRadius = 0.1f * 3;
-        MinLength = 1.0f * 3;
-        MaxLength = 2.0f * 3;
-        DepthRemaining = 3;
+        CrossSectionalRadius = 0.1f * 2;
+        MinLength = 1.5f * 2;
+        MaxLength = 2.0f * 2;
+        DepthRemaining = 6;
         Children = new List<Tree>();
         SwayPhase = (float) GD.RandRange(-Mathf.Pi, Mathf.Pi);
     }
@@ -91,13 +91,15 @@ public class Tree : Spatial
         meshInstance.Translate(Transform.basis.y * length / 2);
         meshInstance.SetSurfaceMaterial(0, BranchMaterial);
         AddChild(meshInstance);
+
+        float subOffsetDegrees = Mathf.Deg2Rad(SubMaxOffsetDegrees);
         
         // Main Branch
         AddBranch(1, length, 0.9f, 0, Mathf.Deg2Rad(MainMaxOffsetDegrees));
-
-        if (DepthRemaining > 1) 
+        AddBranch(1, length, 0.7f, subOffsetDegrees / 2, subOffsetDegrees);
+        /*if (DepthRemaining > 1) 
         {
-            float subOffsetDegrees = Mathf.Deg2Rad(SubMaxOffsetDegrees);
+            
             // Sub Branches
             if (GD.RandRange(0, 1) > 0.5)
             {
@@ -111,7 +113,7 @@ public class Tree : Spatial
                 // AddBranch(1, length, 0.7f, subOffsetDegrees / 2, subOffsetDegrees);
                 //AddBranch(2, length, 0.7f, subOffsetDegrees / 2, subOffsetDegrees);
             }
-        }
+        }*/
     }
 
     public void CreateLeaf()
@@ -120,8 +122,8 @@ public class Tree : Spatial
         // mesh.Radius = 0.4f * 5;
         mesh.Radius = 1;
         mesh.Height = mesh.Radius * 2;
-        mesh.RadialSegments = 256;
-        mesh.Rings = 128;
+        mesh.RadialSegments = 64;
+        mesh.Rings = 32;
         MeshInstance meshInstance = new MeshInstance();
         meshInstance.Mesh = mesh;
         meshInstance.SetSurfaceMaterial(0, LeafMaterial2);
